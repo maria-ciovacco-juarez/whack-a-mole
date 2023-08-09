@@ -39,11 +39,14 @@
   const moles = document.querySelectorAll('.mole');
   let lastHole;
   let timeUp = false;
+  let score = 0;
 
+  // randomize the length of the time the mole peeps out and ducks back down
   function randomTime(min, max) {
     return Math.round(Math.random() * (max - min) + min);
   }
 
+  // randomize the holes that the moles peep out from
   function randomHole(holes) {
     const idx = Math.floor(Math.random() * holes.length);
     const hole = holes[idx];
@@ -71,9 +74,21 @@
   function startGame (){
     scoreBoard.textContent = 0;
     timeUp = false;
+    score = 0
     peep();
     setTimeout(() => timeUp =true, 10000)
   }
+
+  // bonk the mole
+  function bonk(e){
+    if(!e.isTrusted) return; // cheater!
+    score++;
+    this.classList.remove('up');
+    // score displays on screen increases by 1
+    scoreBoard.textContent = score;
+  }
+  // event listener for bonking the mole
+  moles.forEach(mole => mole.addEventListener('click', bonk));
 
 </script>
 </body>
